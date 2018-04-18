@@ -1,12 +1,13 @@
 
+    <?php
+    	/*Se incluyen los ficheros necesarios*/
+		include_once('funciones.php');
+		/*session_start();*/
+    ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
-	
-    <? 
-    	/*Se incluyen los ficheros necesarios*/
-		include_once('funciones.php');
-    ?>
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -47,9 +48,12 @@
           if (password.value != password2.value){
             /*Se le inserta un texto*/
             error.innerHTML = "Las contraseñas no coinciden";
+            botonR.disabled = true;
             
           }else{
             error.innerHTML = " ";
+            botonR.disabled = false;
+
           }
          
       }
@@ -108,7 +112,7 @@
                 <input type="email" class="form-control" name="correoE" placeholder="Correo" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$" title="Introduzca una dirección de correo válida" />
               </div>
               <div>
-                <input type="password" class="form-control" name="contrasenya" placeholder="Contraseña" id="password" required pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{8,20}$" title="Debería tener 8 caracteres alfanuméricos incluyendo mayúsculas y minúsculas" />
+                <input type="password" class="form-control" name="contrasenya" placeholder="Contraseña" id="password" required pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).{8,20}$" title="Debería tener 8 caracteres alfanuméricos incluyendo mayúsculas y minúsculas" required onblur="validar()"/>
               </div>
               <p id="error"></p>
               <div>
@@ -181,6 +185,7 @@
 
           /*Indicamos al usuario que se ha registrado correctamente*/
           echo '<script language="javascript">alert("Usuario registrado correctamente");</script>';
+          echo "<script language='javascript'> window.location.href='#singin';</script>";
           unset($_POST["botonR"]);
   
           /*Mandamos al usuario a la página de inicio*/
@@ -215,7 +220,7 @@
 				if ($fila[0] != $emailL){
 
 					/*Se le indica al usuario que el login ha fallado*/
-					echo '<script language="javascript">alert("El usuario no existe");</script>';
+					echo '<script language="javascript">alert("El usuario no existe o la contraseña no es correcta");</script>';
 					/*Nos quedamos en la misma página*/
 					//echo "<script> window.location.href='entrar.php'</script>";
 					
@@ -250,7 +255,9 @@
 								$_SESSION['registrado'] -> setAvatar($fila[5]);
 							}*/
 
-					echo "<script language='javascript'> window.location.href='enconstruccion.php';</script>";
+							unset($_POST["botonL"]);
+
+					     echo "<script language='javascript'> window.location.href='abririncidencia.php';</script>";
 					
 				}
 
