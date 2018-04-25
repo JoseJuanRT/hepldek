@@ -1,13 +1,25 @@
+ <?php
+/*Se incluyen los ficheros necesarios*/
+include_once('funciones.php');
+session_start();
 
-    <?php
-    	/*Se incluyen los ficheros necesarios*/
-		include_once('funciones.php');
-		/*session_start();*/
-    ?>
+
+		 if (isset($_GET['salir'])){
+
+  				/*Vaciamos la variable de sesión del usuario registrado*/
+  				unset($_SESSION['registrado']);
+  				/*Eliminamos la sesión*/
+  				session_destroy();
+  				/*Iniciamos una sesión limpia*/
+  				session_start();
+
+  			}
+
+  ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
-
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

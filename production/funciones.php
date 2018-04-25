@@ -1,21 +1,3 @@
-
-<?php
-	/*Funcion para abrir un conexión a la base de datos*/
-	function conectar(){
-
-        $mysqli = new mysqli("localhost","root","1neesf_","bbddhelpdesk");
-        $mysqli->set_charset("utf8");
-        /*Intentamos seleccionar el usuario que se quiere añadir a la base de datos*/
-        $query = $mysqli->query("SELECT `email`, `contrasenya`, `permiso`, `icono`, `departamento`, `telefono` FROM `usuario` WHERE email = '$email'");
-        /*Obtenemos la fila de la consulta*/
-        $fila = $query->fetch_array(MYSQLI_NUM);
-
-        return $fila;
-
-    }
-
-?>
-
 <?php
 	/*Se declara una clase usuario con sus respetivos getters y setters, se le crean las variables de fecha y hora por comodidad de uso en el código*/
 	class Usuario{
@@ -69,3 +51,14 @@
 		}
 ?>
 
+<?php
+	/*Funcion para abrir un conexión a la base de datos*/
+	function cortarNombre($email){
+
+        $arrayEmail = explode("@", $email);
+
+        return $arrayEmail[0];
+
+    }
+
+?>

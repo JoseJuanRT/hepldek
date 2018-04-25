@@ -1,5 +1,24 @@
+<?php
+  /*Incluimos el fichero de las funciones*/
+  include_once('funciones.php');
+  /*Iniciamos la sesión*/
+  session_start();
+  
+?>
+
+<?php
+
+    if (!isset($_SESSION['registrado'])) {
+    
+          echo "<script> window.location.href='login.php'</script>";
+
+    }
+
+?>
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -39,8 +58,8 @@
               </div>
               <div class="profile_info">
                 <span>Bienvenido,</span>
-                <h2>josejuan.ripoll</h2>
-                <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <h2><?php echo cortarNombre($_SESSION['registrado']->getEmail())?></h2>
+                <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.php?salir=true">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                 </a>
               </div>
@@ -70,7 +89,6 @@
                     <ul class="nav child_menu">
                       <li><a href="servicioabierto.php">Abierta</a></li>
                       <li><a href="serviciocerrado.php">Cerrada</a></li>
-
                     </ul>
                   </li>
 
@@ -93,7 +111,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/icono.png" alt="">josejuan.ripoll
+                    <img src="images/icono.png" alt=""><?php echo cortarNombre($_SESSION['registrado']->getEmail())?>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -102,7 +120,7 @@
                         <span>Editar perfil</span>
                       </a>
                     </li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="login.php?salir=true"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 
@@ -132,7 +150,7 @@
                                     </div>
                                     <div class="x_content">
 
-                                      <form class="form-horizontal form-label-left" novalidate>
+                                      <form action='' method='POST' class="form-horizontal form-label-left">
 
                                         <span class="section">Notificación de incidencia</span>
 
@@ -140,29 +158,30 @@
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo">Tipo <span class="required">*</span>
                                           </label>
                                           <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input id="Tipo" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="Incidencia" required="required" type="text">
+                                            <input type="text" id="tipo" name="tipo" class="form-control col-md-7 col-xs-12" value="Incidencia" required="required" disabled></input>
                                           </div>
                                         </div>
                                         <div class="item form-group">
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="solicitante">Solicitante <span class="required">*</span>
                                           </label>
                                           <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="solicitante" id="solicitante" name="solicitante" required="required" class="form-control col-md-7 col-xs-12" placeholder="jj@gmail.com">
+                                            <input type="text" id="solicitante" name="solicitante" required="required" class="form-control col-md-7 col-xs-12" value='<?php echo $_SESSION["registrado"]->getEmail()?>' disabled></input>
                                           </div>
                                         </div>
-                                        <div class="item form-group">
+                                        <div>
                                           <label class="control-label col-md-3 col-sm-3 col-xs-12" for="descripcion">Descripción <span class="required">*</span>
                                           </label>
                                           <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <textarea id="descripcion" required="required" name="textarea" class="form-control col-md-7 col-xs-12"></textarea>
+                                            <textarea type="text" id="descripcion" required="required" name="descripcion" class="form-control col-md-7 col-xs-12" maxlength="100"></textarea>
                                           </div>
                                         </div>
                                         <div class="ln_solid"></div>
                                         <div class="form-group">
+                                        <br></br>
                                           <center>
                                           <div class="col-md-6 col-md-offset-3">
-                                            <button type="submit" class="btn btn-primary">Cancelar</button>
-                                            <button id="send" type="submit" class="btn btn-success">Enviar</button>
+                                            <!--<button class="btn btn-primary">Cancelar</button>-->
+                                            <button type="submit" id="submit" type="submit" name="enviar" class="btn btn-success">Abrir incidencia</button>
                                           </div>
                                           </center>
                                         </div>
@@ -184,13 +203,31 @@
         
         <!-- /page content -->
 
-
-
-
       </div>
     </div>
 
+    <?php
+    /*Si se ha pulsado el botón de login*/
+    if (isset($_POST['enviar'])){
 
+         $tipo = "incidencia";
+         $email = $_SESSION['registrado'] -> getEmail();
+         $titulo = $_POST['descripcion'];
+
+         $fecha = new DateTime();
+         $fecha = $fecha->format('Y-m-d H:i:s');
+         
+            $mysqli = new mysqli("localhost","root","1neesf_","bbddhelpdesk");
+            $mysqli->set_charset("utf8");
+
+            $mysqli->query("INSERT INTO `ticket`(`tipo`, `titulo`, `fecha_apertura`, `usuario_email_solicitante` ) VALUES ('".$tipo."','".$titulo."','".$fecha."','".$email."')");
+
+            /*Cerramos la conexión con el servidor*/
+            $mysqli->close();
+
+            echo '<script language="javascript">alert("Incidencia creada correctamente");</script>';
+      }
+    ?>
 
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -201,7 +238,7 @@
     <!-- NProgress -->
     <script src="../vendors/nprogress/nprogress.js"></script>
     
-    <!-- Custom Theme Scripts -->
+    <!--Scripts personalizados -->
     <script src="../build/js/custom.min.js"></script>
   </body>
 </html>
