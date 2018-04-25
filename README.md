@@ -15,10 +15,12 @@ DONE:
 usuario en el Login. (Código PHP ya incrustado, páginas totalmente finalizadas y listas para entrega.)
 - Implementación de cuenta github en hostiguer para poder exportar los cambios de manera utomática al realizar un pull de la rama master. 
 - Creación de estructura HTML para el panel de usuarios registrados (Usuarios que crearán incidencias)
+- Implementar funcionalidad en la estructura del panel de usuarios, páginas de apertura de incidencias y servicios. 
 
 TODO: 
 
-- Implementar funcionalidad en la estructura del panel de usuarios verificando el funcionamiento respecto a la base de datos. 
+- Implementar funcionalidad en la estructura del panel de usuarios verificando el funcionamiento respecto a la base de datos (Faltan las páginas de visualización de incidencias abietas y servicios abiertos).
+
 - Crear estructura HTML para panel de usuarios técnicos.
 - Implementar funcionalidad en la estructura del panel de usuarios técnicos verificando el funcionamiento respecto a la base de datos. 
 - Crear estructura HTML para panel de usuarios administradores.
